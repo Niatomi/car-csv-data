@@ -8,7 +8,7 @@ import ru.niatomi.annotation.ParseIndex;
 @ToString
 public class CarMaker {
 
-    @ParseIndex(headerIndex = 0)
-    private String NameOfCarMaker;
+    @ParseIndex(headerIndex = 1)
+    private String MakerCompany;
 
 }
