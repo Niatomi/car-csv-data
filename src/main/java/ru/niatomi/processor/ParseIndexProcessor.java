@@ -1,8 +1,9 @@
-package ru.niatomi.parser;
+package ru.niatomi.processor;
 
 import lombok.SneakyThrows;
 import ru.niatomi.annotation.ParseIndex;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -17,18 +18,15 @@ public class ParseIndexProcessor {
     @SneakyThrows
     public boolean registerClass(String header, Class<?> clazz) {
         String[] headers = header.split(delimiter);
+
         for (Field field : clazz.getDeclaredFields()) {
             ParseIndex annotation = field.getAnnotation(ParseIndex.class);
             if (annotation != null) {
-                String setterName = "set"
-                        + field.getName().substring(0, 1).toUpperCase()
-                        + field.getName().substring(1);
+                String setterName = "set" +
+                        field.getName().substring(0,1).toUpperCase()  +
+                        field.getName().substring(1);
                 Method setter = clazz.getDeclaredMethod(setterName, field.getType());
                 int index = annotation.headerIndex();
-                if(index < 0) {
-                    String name = annotation.headerName();
-                    index = Arrays.asList(headers).indexOf(name);
-                }
                 Map<Integer, Method> setters = map.getOrDefault(clazz, new HashMap<>());
                 if (setters.containsKey(index)) {
                     return false;
@@ -47,7 +45,7 @@ public class ParseIndexProcessor {
         String[] values = line.split(delimiter);
         Map<Integer, Method> integerMethodMap = map.get(clazz);
         for (Map.Entry<Integer, Method> entry : integerMethodMap.entrySet()) {
-            int key = entry.getKey();
+            Integer key = entry.getKey();
             entry.getValue().invoke(instance, values[key]);
         }
         return instance;
