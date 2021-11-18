@@ -11,10 +11,10 @@ public class Car {
     @ParseIndex(headerIndex = 0)
     private String CarModel;
 
-    @ParseIndex(headerIndex = 1)
-    private int CarModelYear;
-
     @ParseIndex(headerIndex = 2)
+    private String CarModelYear;
+
+    @ParseIndex(headerIndex = 3)
     private String CarColor;
 
 }
