@@ -11,4 +11,6 @@ public class CarMaker {
     @ParseIndex(headerIndex = 1)
     private String MakerCompany;
 
+    private Car car;
+
 }
