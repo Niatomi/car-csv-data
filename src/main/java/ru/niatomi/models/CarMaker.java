@@ -4,13 +4,14 @@ import lombok.Data;
 import lombok.ToString;
 import ru.niatomi.annotation.ParseIndex;
 
+import java.util.List;
+
 @Data
 @ToString
 public class CarMaker {
 
-    @ParseIndex(headerIndex = 1)
     private String MakerCompany;
 
-    private Car car;
+    private List<Car> cars;
 
 }
