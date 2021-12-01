@@ -11,6 +11,4 @@ public @interface ParseIndex {
 
     int headerIndex() default -1;
 
-    String headerName() default "";
-
 }
