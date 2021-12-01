@@ -17,4 +17,7 @@ public class Car {
     @ParseIndex(headerIndex = 3)
     private String CarColor;
 
+    @ParseIndex(headerIndex = 1)
+    private String Manufacturer;
+
 }
