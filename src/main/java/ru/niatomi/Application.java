@@ -1,19 +1,16 @@
 package ru.niatomi;
 
 import lombok.SneakyThrows;
-//import ru.niatomi.api.FileApi;
 import ru.niatomi.api.FileIO;
 import ru.niatomi.models.Car;
 import ru.niatomi.models.CarMaker;
 import ru.niatomi.processor.ParseIndexProcessor;
 
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Application {
     @SneakyThrows
@@ -75,11 +72,10 @@ public class Application {
                 .filter(x -> x.getValue().size() > 2)
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
         //8.2
-        List<String> keys = new ArrayList<String>(sortManufacturers
+        List<String> keys = sortManufacturers
                 .keySet()
                 .stream()
-                .sorted()
-                .collect(Collectors.toList()));
+                .sorted().collect(Collectors.toList());
         //8.3
         fileIO.writeFile(keys, "SORTED_MANUFACTURES.csv");
 
