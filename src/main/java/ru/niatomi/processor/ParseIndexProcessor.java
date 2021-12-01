@@ -3,11 +3,9 @@ package ru.niatomi.processor;
 import lombok.SneakyThrows;
 import ru.niatomi.annotation.ParseIndex;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,9 +26,6 @@ public class ParseIndexProcessor {
                 Method setter = clazz.getDeclaredMethod(setterName, field.getType());
                 int index = annotation.headerIndex();
                 Map<Integer, Method> setters = map.getOrDefault(clazz, new HashMap<>());
-                if (setters.containsKey(index)) {
-                    return false;
-                }
                 setters.put(index, setter);
                 map.put(clazz, setters);
             }
