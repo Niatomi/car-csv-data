@@ -6,14 +6,12 @@ import ru.niatomi.api.FileIO;
 import ru.niatomi.models.Car;
 import ru.niatomi.processor.ParseIndexProcessor;
 
-import java.io.BufferedReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Application {
     @SneakyThrows
@@ -29,29 +27,24 @@ public class Application {
                 .resolve("CAR_DATA.csv");
 
         //Saving data from file and clearing data on csv
-        BufferedReader br = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-        Map<String, Integer> map = fileIO.readFile();
-        System.out.println(map.toString().indexOf(2));
-        String header = br.readLine();
-        br.close();
-//        System.out.println(map.entrySet());
+        List<String> bag = fileIO.readFile();
+        String header = bag.get(0);
+        bag.remove(0);
+
         //register class
         processor.registerClass(header, Car.class);
 
+        //Car objects
         List<Car> cars = new ArrayList<Car>();
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-//            System.out.println(entry.getValue());;
-        }
+        for (String el: bag) cars.add(processor.parseObject(el, Car.class));
 
-        //Car list
-//        List<Car> cars = new ArrayList<Car>();
-//        for (Map.Entry<String, Integer> entry : map.entrySet()) {
-//            cars.add(processor.parseObject(entry.getKey(), Car.class));
-//        }
-
+        //Sorting car by color
+        Map<String, List<Car>> colorGroup = cars
+                .stream()
+                .collect(Collectors.groupingBy(Car::getCarColor));
 
         //File writing
-        fileIO.writeFile(cars, "CAR_DATA_dump.csv");
-
+        fileIO.writeFile(cars, "CAR_DATA_OBJECTS.csv");
+        fileIO.writeFile(colorGroup.entrySet(), "CAR_DATA_COLOR_GROUPING.csv");
     }
 }
