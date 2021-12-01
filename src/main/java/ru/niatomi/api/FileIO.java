@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,7 +27,7 @@ public class FileIO {
                 .resolve("main")
                 .resolve("resources")
                 .resolve(filename);
-        System.out.println(path);
+        if (Files.notExists(path)) Files.createFile(path);
 
         try (BufferedWriter bw = Files.newBufferedWriter(path)) {
             for (Object elem : iterable) {
@@ -36,7 +37,7 @@ public class FileIO {
         }
     }
 
-    public Map<String, Integer> readFile() throws URISyntaxException, IOException {
+    public List<String> readFile() throws URISyntaxException, IOException {
 
         Path path = Paths.get("")
                     .toAbsolutePath()
@@ -45,16 +46,13 @@ public class FileIO {
                     .resolve("resources")
                     .resolve("CAR_DATA.csv");
 
-        Map<String, Integer> bag =
-        Files.lines(path, StandardCharsets.UTF_8)
+        List<String> bag =
+            Files.lines(path, StandardCharsets.UTF_8)
             .map(str -> str.replaceAll("(,)\\1+", ",Not stated,"))
             .map(str -> str.replaceAll("\\s+", " "))
             .map(String::trim)
             .flatMap(line -> Arrays.stream(line.split("\\n+")))
-            .collect(Collectors.groupingBy(str -> str))
-            .entrySet()
-            .stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, ent -> 1, Math::addExact));
+            .collect(Collectors.toList());
 
         return bag;
     }
