@@ -1,5 +1,6 @@
 package ru.niatomi.models;
 
+import jdk.nashorn.internal.objects.annotations.Constructor;
 import lombok.Data;
 import lombok.ToString;
 import ru.niatomi.annotation.ParseIndex;
@@ -14,4 +15,8 @@ public class CarMaker {
 
     private List<Car> cars;
 
+    public CarMaker(String makerCompany, List<Car> cars) {
+        MakerCompany = makerCompany;
+        this.cars = cars;
+    }
 }
